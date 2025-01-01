@@ -7,6 +7,10 @@ const barberRoutes = require('./routes/barberRoutes');
 
 const app = express();
 
+app.use(cors({
+  origin: '*',
+}));
+
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -29,4 +33,12 @@ mongoose
     console.error('Erro ao conectar ao MongoDB:', error);
     process.exit(1);
   });
+
+mongoose.connection.on('connected', () => {
+  console.log('Conexão com o MongoDB foi bem-sucedida!');
+});
+mongoose.connection.on('error', (err) => {
+  console.log('Erro ao conectar com o MongoDB:', err);
+});
+  
 module.exports = app;
